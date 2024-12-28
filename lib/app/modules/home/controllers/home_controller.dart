@@ -1,5 +1,5 @@
-import 'dart:io' as io;
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ class HomeController extends GetxController {
   late RTCVideoRenderer remoteRenderer;
   MediaStream? localStream;
   RTCPeerConnection? peerConnection;
-  io.Socket? socket;
+  IO.Socket? socket;
 
   bool get isInCall => _isInCall.value;
   bool get isMuted => _isMuted.value;
@@ -64,8 +64,8 @@ class HomeController extends GetxController {
       remoteRenderer.srcObject = event.streams[0];
     };
 
-    localStream = await navigator.mediaDevices
-        .getUserMedia({'audio': true, 'video': false});
+    localStream =
+        await mediaDevices.getUserMedia({'audio': true, 'video': false});
 
     localStream?.getTracks().forEach((track) {
       peerConnection?.addTrack(track, localStream!);
